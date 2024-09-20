@@ -1,0 +1,25 @@
+evdev:input:b0003v09DAp2268*           
+ KEYBOARD_KEY_70039=leftctrl    
+ KEYBOARD_KEY_700e0=capslock    
+ KEYBOARD_KEY_700e5=esc
+
+evdev:input:b0003v1A2Cp4C5E*           
+ KEYBOARD_KEY_70039=leftctrl    
+ KEYBOARD_KEY_700e0=capslock    
+ KEYBOARD_KEY_700e5=esc
+
+evdev:input:b0003v1C4Fp0084*
+ KEYBOARD_KEY_70039=leftctrl
+ KEYBOARD_KEY_700e0=capslock
+ KEYBOARD_KEY_700e5=esc
+
+evdev:input:b0003v2EA8p2125*
+ KEYBOARD_KEY_70039=leftctrl
+ KEYBOARD_KEY_700e0=capslock
+ KEYBOARD_KEY_700e5=esc
+ 
+evdev:atkbd:dmi:*            # built-in keyboard: match all AT keyboards for now
+ KEYBOARD_KEY_3a=leftctrl     # capslock to control
+ KEYBOARD_KEY_1d=capslock    # control to capslock
+ KEYBOARD_KEY_38=leftalt # leftalt to lefalo
+ KEYBOARD_KEY_36=esc # right shift to esc
