@@ -1,3 +1,6 @@
+" :set guifont=*
+set guifont=Monospace\ 20
+
 let mapleader = " " " map leader to Space
 """ plugins
 
@@ -121,7 +124,7 @@ set wildignore=*.docx,*.jpg,*.png,*.gif,*.pdf,*.pyc,*.exe,*.flv,*.img,*.xlsx
 " set my vim colorscheme
 colorscheme evening
 
-" clipboard enable!
+" clipboard enable! Unnamedplus messes with my greenclip so i need another solution. Shame i cant do same with Emacs
 imap <C-v> <ESC>"+pa
 " clippppp
 set clipboard=unnamedplus
@@ -153,9 +156,6 @@ nmap <C-a> gg"+yG<CR>
 nnoremap <F2>r :source ~/.vimrc<CR>
 nnoremap <F2>i :PluginInstall<CR>
 nnoremap <F2>u :PluginUpdate<CR>
-
-
+nnoremap <F2>w :w !sudo tee %<CR>
 
 au BufEnter,BufNew *.py map <leader>dt :! python %
-au BufEnter,BufNew *.php map <leader>dt :! php -r %
-au BufEnter,BufNew *.java map <leader>dt :! java %

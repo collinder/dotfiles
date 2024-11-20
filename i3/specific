@@ -1,0 +1,6 @@
+## disable screen
+bindsym $mod+$smod+minus exec "xrandr --output HDMI-0  --off"
+## enable screen
+bindsym $mod+$smod+equal exec "xrandr --output HDMI-0  --auto"
+## temporary terminal
+bindsym $mod+$smod+t exec --no-startup-id urxvt -geometry 120x30 -name "floating_urxvt"

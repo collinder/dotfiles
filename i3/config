@@ -1,4 +1,3 @@
-
 # For the benefit of emacs users: -*- shell-script -*-
 #
 #  _ _____                    __ _
@@ -26,8 +25,8 @@ set $wm_vim_setting_key_up      k
 set $wm_vim_setting_key_right   l
 
 set $wm_setting_app_terminal    alacritty
-#set $wm_setting_app_browser     firefox
-set $wm_setting_app_browser /home/fziv/.local/share/AppImage/ZenBrowser.AppImage    
+set $wm_setting_app_browser floorp
+set $wm_setting_app_fun_browser firefox
 set $wm_setting_app_launcher    i3-dmenu-desktop 
 set $wm_setting_app_compositor  picom --config ~/.config/i3/picom.conf -b
 set $wm_setting_app_music urxvt -geometry 120x30 -name "music_urxvt" -e sh -c "cmus"
@@ -103,21 +102,24 @@ set $workspace39 "39: ☎ "
 # Always open some programs on specified workspace
 assign [class="Alacritty|Sakura|kitty|xterm|XTerm"]          $workspace1
 assign [class="Meld|neovide|Gvim|nvim-qt"]             $workspace2
-assign [class="firefox|Google-chrome|zen-alpha"]       $workspace3
-assign [class="Doublecmd|libreoffice-calc|Terminator"]      $workspace4
+assign [class="Google-chrome|zen-alpha|floorp"]       $workspace3
+assign [class="Doublecmd|libreoffice-calc|amrts.exe|Pcmanfm"]      $workspace4
 assign [class="Postman|jetbrains-studio|jetbrains-idea|Emacs|DBeaver|jetbrains-idea-ce|jetbrains-pycharm-ce|libreoffice"]             $workspace5
 assign [class="obsidian|Chowdren"]             $workspace6
-assign [class="strawberry"]             $workspace7
+assign [class="strawberry|steam"]             $workspace7
 assign [instance="music_urxvt"] $workspace7
 assign [class="KeePassXC"]             $workspace8
 assign [class="TelegramDesktop|Thunderbird"] $workspace9
+assign [class="AmneziaVPN"]             $workspace12
 assign [class="Pcmanfm"]             $workspace14
 assign [class="haguichi"]             $workspace15
+assign [class="qBittorrent|Tixati"]      $workspace16
 assign [class="Vlc|vlc"]      $workspace17
 assign [class="Tor Browser"]             $workspace18
-assign [class="qBittorrent|Tixati"]      $workspace19
+assign [class="firefox"]             $workspace19
 # Enable float for some windows
 for_window [class="^Pavucontrol$"]  floating enable
+for_window [class="^Terminator$"]  floating enable
 for_window [class="^Lxappearance$"] floating enable
 for_window [class="^Arandr$"]       floating enable
 for_window [class="^Eclipse"] floating disable
@@ -170,8 +172,8 @@ set $refresh_i3status killall -SIGUSR1 $bar_setting_statusCommand
 
 # -- Autolaunch -- #
 exec --no-startup-id feh --randomize --bg-fill /home/fziv/Pictures/pic/*
-exec_always --no-startup-id $wm_setting_app_compositor 
-exec --no-startup-id redshift-gtk
+exec_always --no-startup-id $wm_setting_app_compositor
+exec_always --no-startup-id dunst -config ~/.config/dunst/dunstrc
 exec --no-startup-id dex --autostart --environment i3
 exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
 
@@ -179,8 +181,6 @@ exec --no-startup-id nm-applet
 exec --no-startup-id blueberry-tray
 
 exec_always "setxkbmap -model pc105 -layout us,ru -option 'grp:lalt_lshift_toggle'"
-
-#exec-always --no-startup-id syncthing
 
 
 # -- Options -- #
@@ -239,31 +239,34 @@ bar {
 
 
 # -- KEYS -- #
-# Kill focused window
-bindsym $mod+$smod+t exec --no-startup-id urxvt -geometry 120x30 -name "floating_urxvt"
 
+# -> specific <- #
+
+## kill active window
 bindsym $mod+$smod+q kill
 
+## move focus
 bindsym $mod+Left focus left
 bindsym $mod+Down focus down
 bindsym $mod+Up focus up
 bindsym $mod+Right focus right
 
-# Move focused window
+## Move focused window
 bindsym $mod+$smod+j move left
 bindsym $mod+$smod+k move down
 bindsym $mod+$smod+l move up
 bindsym $mod+$smod+semicolon move right
 
+## Move focused window
 bindsym $mod+$smod+Left move left
 bindsym $mod+$smod+Down move down
 bindsym $mod+$smod+Up move up
 bindsym $mod+$smod+Right move right
 
-# Enter fullscreen mode for the focused container
+## Enter fullscreen mode for the focused container
 bindsym $mod+F11 fullscreen toggle
 
-# Switch to workspace
+## Switch to workspace
 bindsym $mod+1 workspace $workspace1
 bindsym $mod+2 workspace $workspace2
 bindsym $mod+3 workspace $workspace3
@@ -274,7 +277,7 @@ bindsym $mod+7 workspace $workspace7
 bindsym $mod+8 workspace $workspace8
 bindsym $mod+9 workspace $workspace9
 
-# Move focused container to workspace
+## Move focused container to workspace
 bindsym $mod+$smod+1 move container to workspace $workspace1, workspace $workspace1
 bindsym $mod+$smod+2 move container to workspace $workspace2, workspace $workspace2
 bindsym $mod+$smod+3 move container to workspace $workspace3, workspace $workspace3
@@ -287,99 +290,128 @@ bindsym $mod+$smod+9 move container to workspace $workspace9, workspace $workspa
 
 
 
-# Reload the configuration file
+## Reload the configuration file
 bindsym $mod+$smod+y reload
 
-# This types out whatever is in the clipboard as if it had been
-# typed at the keyboard by a human.
-bindsym --release $mod+$smod+p exec sleep 1 && xdotool type --clearmodifiers `xclip -selection c -out`
+## This types out whatever is in the clipboard as if it had been typed at the keyboard by a human.
+bindsym--release $mod+$smod+p exec sleep 1 && xdotool type --clearmodifiers `xclip -selection c -out`
 
-# Restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
+## Restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
 bindsym $mod+$smod+r restart
 
+
+## show help
+bindsym $mod+F1 exec terminator -e ~/scripts/configkeys.sh
+
+## thunderbird
 bindsym $mod+q exec thunderbird
+## floorp
 bindsym $mod+w exec $wm_setting_app_browser
-bindsym $mod+$smod+w exec drawing
-bindsym $mod+e exec "/home/fziv/Progs/tor-browser-linux64-12.5_ALL/tor-browser/Browser/start-tor-browser --detach"
+## firefox
+bindsym $mod+$smod+w exec $wm_setting_app_fun_browser
+## tor browser
+bindsym $mod+e exec "/home/fziv/Progs/tor-browser/Browser/start-tor-browser"
+## launch app
 bindsym $mod+r exec --no-startup-id $wm_setting_app_launcher 
+## alacritty
 bindsym $mod+t exec "$wm_setting_app_terminal"
+## discord
 bindsym $mod+y exec discord
+## syncthing
 bindsym $mod+u exec "syncthing"
+## postman
 bindsym $mod+i exec "/opt/postman/app/Postman &"
-bindsym $mod+o exec "obs"
 
-
+## cmus
 bindsym $mod+$smod+a exec --no-startup-id $wm_setting_app_music
 bindsym $mod+s exec /home/fziv/scripts/nvr_p
+## gvim
 bindsym $mod+$smod+s exec gvim
+## terminator + vifm
 bindsym $mod+d exec "terminator -e vifm"
-bindsym $mod+$smod+d exec doublecmd
+## pcmanfm
+bindsym $mod+$smod+d exec pcmanfm 
+## fullscreen
 bindsym $mod+f fullscreen toggle
-bindsym $mod+$smod+f exec libreoffice-calc
+## libreoffice
+bindsym $mod+$smod+f exec libreoffice
 
 
+## togle mode
 bindsym $mod+space focus mode_toggle
 
+## keepassxc
 bindsym $mod+z exec keepassxc
+
+## obsidian
 bindsym--release $mod+x exec obsidian
+## calculator
 bindsym--release $mod+c exec  --no-startup-id "speedcrunch"
+## telegram
 bindsym $mod+v exec "telegram-desktop"
 
-
+## emacs
 bindsym $mod+n exec --no-startup-id 'emacsclient --alternate-editor="" --no-wait $* -c'
-bindsym $mod+$smod+m exec --no-startup-id pactl set-sink-mute 0 toggle # mute sound
+## mute sound
+bindsym $mod+$smod+m exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle
 
 
-# Split in horizontal orientation
+## Split in horizontal orientation
 bindsym $mod+$smod+h split h
-# Split in vertical orientation
+## Split in vertical orientation
 bindsym $mod+$smod+v split v
 
-
+## tixati
 bindsym $mod+comma exec tixati
 
 
-# Move between windows
+## Move between windows
 bindsym $mod+h focus left
 bindsym $mod+j focus down
 bindsym $mod+k focus up
 bindsym $mod+l focus right
 
+## mons get gut
 bindsym $mod+p exec "mons -e right"
+## audio control
 bindsym $mod+bracketleft exec pavucontrol
 
-# xkill
+## xkill
 bindsym --release $mod+Escape exec xkill
 
-bindsym $mod+$smod+minus exec "xrandr --output eDP --off"
-bindsym $mod+$smod+equal exec "xrandr --output eDP --auto"
-
+## printscreen
 bindsym Print exec "maim -s | xclip -selection clipboard -t image/png"
 
-
+## workspace to output left
 bindsym $mod+$smod+comma move workspace to output left
+## workspace to output right
 bindsym $mod+$smod+period move workspace to output right
 
+## workspace next
 bindsym $mod+Tab workspace next
+## workspace prev
 bindsym $mod+$smod+Tab workspace prev
 
 
-
-
-
+## i3 launch whatever
 bindsym $mod+Return exec i3-sensible-terminal
 
+## stacking layout
 bindsym $mod+$smod+z layout stacking
+## tabbed layout
 bindsym $mod+$smod+x layout tabbed
-#bindsym $mod+$smod+c layout toggle split
+## toggle split layout
+bindsym $mod+$smod+c layout toggle split
 
 
-# Toggle tiling / floating
+## toggle tiling / floating
 bindsym $mod+$smod+space floating toggle
 
+## exit i3
 bindsym $mod+$smod+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
 
 # -- Modes -- #
+## window manipulation mode
 bindsym $mod+g mode "$mode_window_manipulation"
 set $mode_window_manipulation : focus (p)arent, (c)hild; layout (s)tacking, (t)abbed; togg(e) split; move - hjkl; space - floating toggle;(b)ar mode toggle
 mode "$mode_window_manipulation" {
@@ -406,8 +438,9 @@ bindsym Return mode "default"
 bindsym Escape mode "default"
 }
 
+## redshift mode
 bindsym $mod+b mode "$mode_redshift"
-set $mode_redshift Set colour temperature: (a)uto, (r)eset, (1)000K, (2)500K, (3)000K, (4)000K, (5)000K, (9)000K
+set $mode_redshift Set colour temperature: (a)uto, (r)eset, (1)000K, (2)500K, (3)000K, (4)000K, (5)000K, (9)000K, f(eh)
 set $kill_redshift pkill -9 redshift;
 mode "$mode_redshift" {
     bindsym a exec --no-startup-id "$kill_redshift redshift -P -t 5000:4000", mode "default"
@@ -418,6 +451,7 @@ mode "$mode_redshift" {
     bindsym 4 exec --no-startup-id "$kill_redshift redshift -P -O 4000", mode "default"
     bindsym 5 exec --no-startup-id "$kill_redshift redshift -P -O 5000", mode "default"
     bindsym 9 exec --no-startup-id "$kill_redshift redshift -P -O 9000", mode "default"
+    bindsym f exec --no-startup-id feh --randomize --bg-fill /home/fziv/Pictures/pic/*
 
     bindsym Return mode "default"
     bindsym Escape mode "default"
@@ -425,6 +459,26 @@ mode "$mode_redshift" {
     bindsym $mod+$smod+b exec android-studio, mode "default"
 }
 
+## brightness mode
+bindsym $mod+$smod+b mode "$mode_brightness"
+set $mode_brightness Set brightness: (1).0, 0.(8), 0.(7), 0.(5), 0.(2), (g)g
+mode "$mode_brightness" {
+    bindsym 1 exec --no-startup-id "xrandr --output eDP-1 --brightness 1", mode "default"
+    bindsym 8 exec --no-startup-id "xrandr --output eDP-1 --brightness 0.8", mode "default"
+    bindsym 7 exec --no-startup-id "xrandr --output eDP-1 --brightness 0.7", mode "default"
+    bindsym 5 exec --no-startup-id "xrandr --output eDP-1 --brightness 0.5", mode "default"
+    bindsym 2 exec --no-startup-id "xrandr --output eDP-1 --brightness 0.2", mode "default"
+
+
+    bindsym g exec --no-startup-id "xrandr -s 1920x1080"", mode "default"
+
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+    bindsym $mod+b exec pycharm, mode "default"
+    bindsym $mod+$smod+b exec android-studio, mode "default"
+}
+
+## i3 control mode
 bindsym $mod+$smod+n mode "$mode_system"
 set $mode_system System (k) lock, (l) logout, (u) suspend, (h) hibernate, (r) reboot, (s) shutdown
 mode "$mode_system" {
@@ -440,23 +494,40 @@ mode "$mode_system" {
     bindsym Escape mode "default"
 }
 
+## audio adjust mode
 bindsym $mod+m mode "$audio_adjust"
 set $audio_adjust System (m) mute, (h) (j) increase, (l) (k) decrease, (i) micdisable, (f) fulltoggle
 mode "$audio_adjust" {
-    bindsym m exec --no-startup-id pactl set-sink-mute 0 toggle # mute sound, mode "default"
+    bindsym m exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle, mode "default"
     bindsym j exec --no-startup-id "amixer -D pulse sset Master '5%+'"
     bindsym k exec --no-startup-id "amixer -D pulse sset Master '5%-'"
     bindsym h exec --no-startup-id "amixer -D pulse sset Master '50%+'"
     bindsym l exec --no-startup-id "amixer -D pulse sset Master '50%-'"
 
     bindsym i exec --no-startup-id "pactl set-source-mute @DEFAULT_SOURCE@ toggle", mode "default"
-    bindsym f exec --no-startup-id "pactl set-source-mute @DEFAULT_SOURCE@ toggle", exec --no-startup-id pactl set-sink-mute 0 toggle, mode "default"
+    bindsym f exec --no-startup-id "pactl set-source-mute @DEFAULT_SOURCE@ toggle", exec --no-startup-id "pactl set-sink-mute @DEFAULT_SINK@ toggle", mode "default"
 
     # back to normal: Enter or Escape
     bindsym Return mode "default"
     bindsym Escape mode "default"
 }
 
+## timers mode
+bindsym $mod+o mode "$timers"
+set $timers System (o) 2h, (p) 10m, m+(o) obs, m+s+(o) drawing
+mode "$timers" {
+    bindsym o exec --no-startup-id "/home/fziv/scripts/i3log.sh log2h &", mode "default"
+    bindsym p exec --no-startup-id "/home/fziv/scripts/i3log.sh log10m &", mode "default"
+
+    bindsym $mod+o exec "obs", mode "default"
+    bindsym $mod+$smod+o exec drawing, mode "default"
+
+    # back to normal: Enter or Escape
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+
+## cmus mode
 bindsym $mod+a mode "$cmus_mode"
 set $cmus_mode Cmus (s) stop, (h) (j) prev -5s, (k) (l) +5s next, (i) micdisable, (f) fulltoggle
 mode "$cmus_mode" {
@@ -472,12 +543,15 @@ mode "$cmus_mode" {
     bindsym Escape mode "default"
 }
 
+## printscreen mode
 bindsym $mod+Print mode "$printscr_mode"
-set $printscr_mode (w)indow, to (p)ictures, w(i)ndow to p(i)ctires
+set $printscr_mode (w)indow, to (p)ictures, w(i)ndow to p(i)ctires, p(e)ek
 mode "$printscr_mode" {
     bindsym w exec "maim -i $(xdotool getactivewindow) | xclip -selection clipboard -t image/png", mode "default"
     bindsym p exec "maim -s ~/Pictures/$(date +%s).png", mode "default"
     bindsym i exec "maim -i $(xdotool getactivewindow) ~/Pictures/$(date +%s).png", mode "default"
+    bindsym e exec peek, mode "default"
+
 
     bindsym Return mode "default"
     bindsym Escape mode "default"
@@ -568,6 +642,7 @@ mode "triplezero" {
     bindsym Escape mode "default"
 }
 
+## resize
 bindsym $mod+$smod+g mode "$mode_resize"
 set $mode_resize : hjkl; (b)order toggle; t - normal, y - pixel 1, u - none; g - mode_gaps
 mode "$mode_resize" {
@@ -629,6 +704,8 @@ mode "$mode_gaps_outer" {
         bindsym Return mode "default"
         bindsym Escape mode "default"
 }
+
+include ~/.config/i3/specific
 
 
 # -- Trash -- #

@@ -232,6 +232,8 @@ addSearchAlias('mj', 'mojeek', 'https://www.mojeek.com/search?q=', 's');
 addSearchAlias('br', 'brave', 'https://search.brave.com/search?q=', 's');
 addSearchAlias('qw', 'qwant', 'https://www.qwant.com/?q=', 's');
 addSearchAlias('pre', 'presearch', 'https://presearch.com/search?q=', 's');
+addSearchAlias('yt', 'youtube', 'https://www.youtube.com/results?search_query=', 's');
+addSearchAlias('tw', 'twitch', 'https://www.twitch.tv/search?term=', 's');
 
 settings.defaultSearchEngine = 'st';
 
@@ -277,4 +279,5 @@ map('J', 'oh');
 map('a', 'ab');
 unmap('ab');
 unmap('aa');
+
 
