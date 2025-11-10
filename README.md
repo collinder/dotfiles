@@ -6,13 +6,14 @@ sudo cp /home/fziv/Documents/backup/90-custom-keyboard.hwdb /etc/udev/hwdb.d/90-
 sudo systemd-hwdb update
 sudo udevadm trigger
 ```
-and restant
+and restart
 ## Config.js
 For firefox plugin SurfingKeys
 ## .Xresourses
-You need to place it in home directory
+You need to place it in home directory. 
+Execute
 ```bash
 xrdb ~/.Xresources
 ```
-after
+after placing it
 
